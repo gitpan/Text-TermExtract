@@ -8,7 +8,7 @@ use Lingua::StopWords;
 use Text::Language::Guess;
 use Log::Log4perl qw(:easy);
 
-our $VERSION = "0.01";
+our $VERSION = "0.02";
 
 ###########################################
 sub new {
@@ -65,8 +65,15 @@ sub terms_extract {
     }
     
     my @weighted_words = sort {
-      $words{$b} <=> $words{$a}
+      $words{$b} <=> $words{$a} or
+      $a cmp $b  # sort alphabetically on equal score
     } keys %words;
+
+    if(get_logger()->is_debug()) {
+        for my $word (@weighted_words) {
+            DEBUG "$word scores $words{$word}";
+        }
+    }
 
     if(exists $opts->{max} and $opts->{max} < @weighted_words) {
         return @weighted_words[0..($opts->{max}-1)];

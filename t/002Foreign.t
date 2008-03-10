@@ -20,4 +20,4 @@ my @words = $ext->terms_extract( $text, { max => 3 } );
 
 is($words[0], "kandidaten", "keywords");
 is($words[1], "vorwahlen", "keywords");
-is($words[2], "republikanische", "keywords");
+is($words[2], "amerikanischen", "keywords");
